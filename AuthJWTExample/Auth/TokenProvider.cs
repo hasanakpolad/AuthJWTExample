@@ -19,7 +19,7 @@ namespace AuthJWTExample.Auth
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Email,model.Email),
-                //new Claim(JwtRegisteredClaimNames.Aud, configuration.GetValue<string>("JWT:Audience")),
+                new Claim(JwtRegisteredClaimNames.Aud, configuration.GetValue<string>("JWT:Audience")),
                 new Claim(JwtRegisteredClaimNames.Iss,configuration.GetValue<string>("JWT:Issuer")),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 //new Claim(JwtRegisteredClaimNames.),
