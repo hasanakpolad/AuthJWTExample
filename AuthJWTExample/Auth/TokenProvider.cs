@@ -19,11 +19,11 @@ namespace AuthJWTExample.Auth
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Email,model.Email),
-                new Claim(JwtRegisteredClaimNames.Aud, configuration.GetValue<string>("JWT:Audience")),
                 new Claim(JwtRegisteredClaimNames.Iss,configuration.GetValue<string>("JWT:Issuer")),
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                //new Claim(JwtRegisteredClaimNames.),
-                //new Claim(),
+                new Claim(JwtRegisteredClaimNames.Iat,DateTime.Now.ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp,DateTime.Now.AddMinutes(20).ToString()),
+                //new Claim("UserName",model.),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("JWT:Key")));
 
@@ -33,8 +33,8 @@ namespace AuthJWTExample.Auth
                 configuration.GetValue<string>("JWT:Issuer"),
                 configuration.GetValue<string>("JWT:Audience"),
                 claims,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddMinutes(30),
+                DateTime.Now,
+                DateTime.Now.AddMinutes(30),
                 signIn
                 );
 

@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen(o =>
     o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authentication",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
@@ -34,10 +34,7 @@ builder.Services.AddSwaggerGen(o =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id ="Bearer"
-                },
-                Scheme="Bearer",
-                In=ParameterLocation.Header,
-                Name="Bearer",
+                }
 
             },
             new string[] { }
@@ -58,8 +55,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = false,
             ValidateIssuerSigningKey = true
         };
+        opt.RequireHttpsMetadata = false;
+        opt.SaveToken = true;
+        opt.Audience = builder.Configuration["JWT:Audience"];
     });
 
+builder.Services.AddCors(x => x.AddPolicy("*", b =>
+{
+    b.AllowAnyOrigin();
+    b.AllowAnyMethod();
+    b.AllowAnyHeader();
+}));
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("GetAccess", policy =>
+    {
+        policy.RequireRole("admin");
+    });
+});
 
 var app = builder.Build();
 

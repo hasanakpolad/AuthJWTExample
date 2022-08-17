@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthJWTExample.Controllers
 {
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
